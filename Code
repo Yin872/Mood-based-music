@@ -1,0 +1,153 @@
+#This is a comment
+
+# Main piano melody (Like Jennie)
+playNote(26, beats=4)   
+playNote(33, beats=2)   
+playNote(26, beats=2)  
+playNote(27, beats=2)   
+playNote(27, beats=2)  
+playNote(26, beats=4)   
+# Repeat melody with slight rhythmic variation for continuity
+
+
+# 2) Bass Line Section
+# Instrument: Guitar 808 Bass (TunePad built-in)
+# A supportive bass groove that complements the piano melody.
+# Short notes + rests create syncopation and forward motion.
+
+playNote(26)                  # Root tone - establishes the groove
+rest(0.5)                     # Short pause for syncopation
+playNote(26, beats=0.5)       # Repeated hit for rhythmic pulse
+playNote(26, beats=0.5)
+rest(0.25)
+playNote(33, beats=0.75)      # Higher note - adds variation
+playNote(33, beats=0.5)
+# Repeat phrase with slight melodic change
+
+
+# 3) Bass Loop Section
+# Instrument: Guitar 808 Bass (TunePad built-in)
+# Simple repeating bass loop reinforcing the groove and
+# harmonic base. Each note = 1 beat for an even pulse.
+
+bass_notes = [37, 32, 31, 31]   # One-bar bass motif
+for note in bass_notes:
+    playNote(note, beats=1)     # Even quarter-note movement
+
+
+4) Drum Section (Main Groove + Fill)
+# Instrument: 808 Drum Kit (TunePad built-in)
+# Sheet-style kick / snare / hi-hat arranged across 8 bars.
+# 'play_bar()' draws hats at 8ths or 16ths, and places
+# kick/snare by beat offsets (within a 4/4 bar).
+# Mapping reminder used in this project:
+# kick=0, snare=2, hat=4, open hat=5
+
+def play_bar(kicks, snares, hats_type="8"):
+  
+    kicks/snares: lists of beat offsets from bar start (0.0..3.75)
+    hats_type: "8" for eighths (0.5 step) or "16" for sixteenths (0.25 step)
+    """
+    start = getPlayhead()  # current bar start
+
+    # --- Hi-hats across the bar ---
+    step = 0.5 if hats_type == "8" else 0.25
+    t = start
+    while t < start + 4.0:
+        moveTo(t)
+        playNote(4, beats=step, velocity=60)   # hi-hat hits
+        t += step
+
+    # --- Kicks ---
+    for b in kicks:
+        moveTo(start + b)
+        playNote(0, velocity=112)
+
+    # --- Snares ---
+    for b in snares:
+        moveTo(start + b)
+        playNote(2, velocity=108)
+
+    # Land at the end of the bar to keep alignment
+    moveTo(start + 4.0)
+
+# ---- 8-bar drum arrangement ----
+# Bars 1–2: basic groove (eighth-note hats)
+for _ in range(2):
+    play_bar(kicks=[0.0, 2.0], snares=[1.0, 3.0], hats_type="8")
+
+# Bars 3–4: tighter hats (sixteenth-note energy)
+for _ in range(2):
+    play_bar(kicks=[0.0, 2.0], snares=[1.0, 3.0], hats_type="16")
+
+# Bars 5–6: add a pickup before beat 4
+for _ in range(2):
+    play_bar(kicks=[0.0, 2.0, 3.5], snares=[1.0, 3.0], hats_type="8")
+
+# Bars 7–8: small snare-fill ending
+play_bar(kicks=[0.0, 2.0], snares=[1.0, 3.0], hats_type="8")
+
+# --- One-bar snare fill (last half = 16ths) ---
+start = getPlayhead()
+moveTo(start)
+
+# Hats for the bar (eighths)
+t = start
+while t < start + 4.0:
+    moveTo(t)
+    playNote(4, beats=0.5, velocity=60)
+    t += 0.5
+
+# Basic kick & snare hits
+moveTo(start + 0.0); playNote(0, velocity=112)
+moveTo(start + 2.0); playNote(0, velocity=112)
+moveTo(start + 1.0); playNote(2, velocity=108)
+moveTo(start + 3.0); playNote(2, velocity=108)
+
+# Last half-bar snare 16ths
+moveTo(start + 2.0)
+for _ in range(4):
+    playNote(2, beats=0.25, velocity=95)
+moveTo(start + 4.0)
+
+
+# 5) Drum Loop Extension
+# Instrument: 808 Drum Kit
+# A steady kick–snare alternation every half-beat. Works as a background layer to reinforce the main groove.
+
+for i in range(8):
+    playNote(0, beats=0.5)   # Kick (low tone)
+    playNote(2, beats=0.5)   # Snare (mid tone)
+    rest(0)                  # Continuous flow (no gap)
+
+# 6) Drum Groove Continuation 
+# Instrument: 808 Drum Kit (TunePad built-in) Similar loop used to extend the groove into a smooth ending, providing closure for the composition.
+
+for i in range(8):
+    playNote(0, beats=0.5)   
+    playNote(2, beats=0.5)   
+    rest(0)                  
+
+
+# 7) Synth Bass Pattern
+# Instrument: PWM Synth Bass (TunePad built-in)
+# Bright, energetic PWM synth figure to lift the energy.
+# Quick ascending sequence balances the smoother piano line.
+
+for i in range(4):
+    playNote(48, beats=0.25)   # C - start of rising phrase
+    playNote(50, beats=0.25)   # D - upward motion
+    playNote(52, beats=0.25)   # E - bright tone
+    playNote(53, beats=0.25)   # F - completes ascending figure
+
+
+# 8) Final Drum Layer
+#    Instrument: 808 Drum Kit (TunePad built-in)
+# Reinforces the ending groove alongside the synth pattern, keeping forward momentum and a strong rhythmic closure.
+# (Percussive accents here use higher note numbers as mapped in this project’s kit.)
+
+for i in range(4):
+    playNote(48, beats=0.25)   
+    playNote(50, beats=0.25)  
+    playNote(52, beats=0.25)  
+    playNote(53, beats=0.25)   
